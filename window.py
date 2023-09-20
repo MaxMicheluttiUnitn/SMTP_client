@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import PhotoImage
 from dotenv import load_dotenv
 import os
 
@@ -52,9 +53,21 @@ def display_bottom_menu():
         master=frm_bottom,padx=30
     )
     btn_cancel.pack(side=tk.RIGHT)  
+    btn_attach = tk.Button(
+        text="Add attachment",
+        relief=tk.RAISED,
+        master=frm_bottom,padx=30,
+    )
+    btn_attach.pack(side=tk.LEFT)  
     frm_bottom.pack(fill=tk.X)
-    return btn_send,btn_cancel
+    return btn_send,btn_cancel,btn_attach
 
+def display_attachments_layer():
+    frm_attach = tk.Frame(pady=3, height=15)
+    lbl_attach=tk.Label(text="No attachments", anchor=tk.W, master=frm_attach)
+    lbl_attach.pack(side=tk.LEFT,fill=tk.Y)
+    frm_attach.pack(fill=tk.X)
+    return lbl_attach
 
 def display_editor_window(window):
     window.title("SMTP client")
@@ -64,7 +77,8 @@ def display_editor_window(window):
     ent_bcc,btn_bcc = display_top_entry_elem("BCC:", True, "From CSV")
     ent_subject,btn_subject = display_top_entry_elem("Subject:")
     txt_editor = display_text_editor()
-    btn_send,btn_cancel = display_bottom_menu()
+    lbl_attach = display_attachments_layer()
+    btn_send,btn_cancel,btn_attach = display_bottom_menu()
     return {
         "To" : ent_to,
         "Cc_ent" : ent_cc,
@@ -74,7 +88,9 @@ def display_editor_window(window):
         "Subject": ent_subject,
         "Editor": txt_editor,
         "Send_btn": btn_send,
-        "Cancel_btn": btn_cancel
+        "Cancel_btn": btn_cancel,
+        "Attach_btn": btn_attach,
+        "Attach_lbl": lbl_attach
     }
 
 if __name__ == "__main__":

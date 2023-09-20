@@ -5,6 +5,8 @@ import window
 import mail_script
 import re
 from tkinter.messagebox import showinfo,askyesno
+import easygui
+from os.path import basename
 
 load_dotenv()
 
@@ -14,6 +16,7 @@ password = os.getenv('APP_PASSWORD')
 
 display_window = tk.Tk()
 interactable_elements = {}
+attachments = []
 
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
  
@@ -27,13 +30,27 @@ def error_pop_up(error_string):
     showinfo("Error!",error_string)
 
 def confirm_popup(subject,text,receiver,cc_receivers,bcc_receivers):
+    global attachments
     answer = askyesno(title='Confirm',
                     message='Are you sure that you want to send the email?')
     if answer:
-        mail_script.send_email(subject,text,receiver,cc_receivers,bcc_receivers,password,[])
+        mail_script.send_email(subject,text,receiver,cc_receivers,bcc_receivers,password,attachments)
         reset(None)
 
-    
+def attach(event):
+    global attachments
+    new_attachment = easygui.fileopenbox("Select the file to attach")
+    if(new_attachment in attachments):
+        return
+    attachments.append(new_attachment)
+    attachment_name = basename(new_attachment)
+    if len(attachments) == 1:
+        interactable_elements["Attach_lbl"].config(text = "Attachments: "+attachment_name)
+    else:
+        lbl_attach_text = interactable_elements["Attach_lbl"]["text"]
+        new_lbl_attach_text = lbl_attach_text + "; " + attachment_name
+        interactable_elements["Attach_lbl"].config(text = new_lbl_attach_text)
+
 
 def reset(event):
     interactable_elements["Editor"].delete("1.0",tk.END)
@@ -42,6 +59,9 @@ def reset(event):
     interactable_elements["Bcc_ent"].delete(0,tk.END)
     interactable_elements["To"].delete(0,tk.END)
     interactable_elements["To"].insert(0,sender_email)
+    global attachments
+    attachments = []
+    interactable_elements["Attach_lbl"].config(text = "No attachments")
 
 def send(event):
     subject = interactable_elements["Subject"].get()
@@ -90,6 +110,7 @@ def load_csv_bcc(event):
 def add_bindings():
     interactable_elements["Cancel_btn"].bind("<Button-1>",reset)
     interactable_elements["Send_btn"].bind("<Button-1>",send)
+    interactable_elements["Attach_btn"].bind("<Button-1>",attach)
     interactable_elements["Cc_btn"].bind("<Button-1>",load_csv_cc)
     interactable_elements["Bcc_btn"].bind("<Button-1>",load_csv_bcc)
 

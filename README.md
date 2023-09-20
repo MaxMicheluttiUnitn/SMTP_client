@@ -32,3 +32,9 @@ To use the code type in your terminal
 ```
  python3 main.py
  ```
+
+To use the terminal version type
+
+```
+ python3 mail_script.py
+ ```

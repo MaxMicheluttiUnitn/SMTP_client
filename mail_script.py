@@ -85,10 +85,11 @@ Subject:{subject}
             for att in attachments:
                 print(att)
             wants_to_attach = input("Would you like to add some more attachments? [y/n]: ")
-        print("Attachments: ")
-        for att in attachments:
-            print(att)
-        confirm = input("Confirm? [y/n]: ")
+        if len(attachments) > 0:
+            print("Attachments: ")
+            for att in attachments:
+                print(att)
+        confirm = input("Confirm sending? [y/n]: ")
         if(confirm == 'y' or confirm == 'Y'):
             send_email(subject, body, sender_email, sender_email, recipients, [], password, attachments)
         else:

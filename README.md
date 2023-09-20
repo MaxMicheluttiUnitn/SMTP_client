@@ -27,7 +27,7 @@ To send emails from Google GMail accounts use the App-Password that you can gene
 
 ## Use
 
-To use the code type in your terminal
+To use the full GUI type in your terminal
 
 ```
  python3 main.py
@@ -36,5 +36,5 @@ To use the code type in your terminal
 To use the terminal version type
 
 ```
- python3 mail_script.py
+ python3 mail_s.py
  ```

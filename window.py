@@ -48,7 +48,7 @@ def display_bottom_menu():
     )
     btn_send.pack(side=tk.RIGHT)
     btn_cancel = tk.Button(
-        text="Cancel",
+        text="Clear",
         relief=tk.RAISED,
         master=frm_bottom,padx=30
     )

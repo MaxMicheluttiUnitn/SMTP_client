@@ -34,7 +34,7 @@ def confirm_popup(subject,text,receiver,cc_receivers,bcc_receivers):
     answer = askyesno(title='Confirm',
                     message='Are you sure that you want to send the email?')
     if answer:
-        mail_script.send_email(subject,text,receiver,cc_receivers,bcc_receivers,password,attachments)
+        mail_script.send_email(subject,text,sender_email,receiver,cc_receivers,bcc_receivers,password,attachments)
         reset(None)
 
 def attach(event):

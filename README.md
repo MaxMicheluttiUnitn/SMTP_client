@@ -36,5 +36,5 @@ To use the full GUI type in your terminal
 To use the terminal version type
 
 ```
- python3 mail_s.py
+ python3 mail_script.py
  ```

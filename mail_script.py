@@ -36,13 +36,14 @@ def read_csv(recipients):
             line_count += 1
         print(f'Processed {line_count - 1} lines.')
 
-def send_email(subject, body, sender, recipients, password, attachments):
+def send_email(subject, body, sender, cc_recipients, bcc_recipients, password, attachments):
     # msg = MIMEText(body)
     msg = MIMEMultipart()
     msg['Subject'] = subject
     msg['From'] = sender
     msg['To'] =  sender
-    msg['Bcc'] = ', '.join(recipients)
+    msg['Cc'] = ', '.join(cc_recipients)
+    msg['Bcc'] = ', '.join(bcc_recipients)
     msg.attach(MIMEText(body))
     if len(attachments) > 0:
         for f in attachments:
@@ -89,7 +90,7 @@ Subject:{subject}
             print(att)
         confirm = input("Confirm? [y/n]: ")
         if(confirm == 'y' or confirm == 'Y'):
-            send_email(subject, body, sender_email, recipients, password, attachments)
+            send_email(subject, body, sender_email, recipients, [], password, attachments)
         else:
             print("Operation cancelled...")
     else:

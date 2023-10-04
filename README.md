@@ -50,3 +50,5 @@ To use the terminal version type
 ```
  >> python3 mail_script.py
  ```
+
+The CSV file loaded by the application must be in the following format: receivers emails must be written in the first column of the file, one email for eaxch row

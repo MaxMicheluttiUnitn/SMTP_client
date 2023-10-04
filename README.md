@@ -1,40 +1,52 @@
 # SMTP_client
 
-This is a SMTP client designed to send emails in BCC to multiple users.  
+This is a SMTP client designed to send e-mails with Gmail in BCC to multiple users.
+
+You need Python 3.10.12 or a later version to run this code. Older Python versions may work, but there is no guarantee. You can check your python version by typing this in your terminal:
+
+```
+ >> python3 --version
+ ```
 
 ## Install
 
-First clone the repository with git
+First clone the repository with git:
 
 ```
-git clone https://github.com/MaxMicheluttiUnitn/SMTP_client  
+>> git clone https://github.com/MaxMicheluttiUnitn/SMTP_client  
 ```   
 
-Remember to install python dependencies
+Remember to install python dependencies:
 
 ``` 
-pip install -r requirements.txt 
+>> pip install -r requirements.txt 
 ```
 
 For **LINUX** users, install TKinter to load the GUI:
 
 ```
- apt-get install python3-tk  
+ >> apt-get install python3-tk  
  ```
 
-Remember to create and fill the **.env** file as shown in **.env.example** with your email and password.  
-To send emails from Google GMail accounts use the App-Password that you can generate from your GMail account.
+Once everything is installed you can run the setup script:
+
+```
+ >> python3 setup.py 
+ ```
+
+In alternative to create and fill the **.env** file as shown in **.env.example** with your email and password.  
+To send emails from Google GMail accounts use the **APP-PASSWORD** that you can generate from your GMail account.
 
 ## Use
 
 To use the full GUI type in your terminal
 
 ```
- python3 main.py
+ >> python3 main.py
  ```
 
 To use the terminal version type
 
 ```
- python3 mail_script.py
+ >> python3 mail_script.py
  ```

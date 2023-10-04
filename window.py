@@ -71,10 +71,13 @@ def display_attachments_layer():
     frm_attach.pack(fill=tk.X)
     return frm_attachments, lbl_attach
 
-def display_editor_window(window):
+def initialize_window(window):
     img = PhotoImage(file='logo.png')
     window.iconphoto(False, img)
     window.title("SMTP client")
+    window.minsize(300,150)
+
+def display_editor_window(window):
     display_email_elem("From:",sender_email)
     ent_to,btn_to = display_top_entry_elem("To:",default_entry=sender_email)
     ent_cc,btn_cc = display_top_entry_elem("CC:", True, "From CSV")
@@ -97,6 +100,15 @@ def display_editor_window(window):
         "Attach_lbl": lbl_attach,
         "Attachments_frm": frm_attachments
     }
+
+def display_authentication_window(window):
+    frm_auth=tk.Frame(master=window)
+    lbl_auth=tk.Label(text="Insert your password and press enter:", anchor=tk.W, master=frm_auth)
+    lbl_auth.pack(pady=8)
+    ent_auth=tk.Entry(width=35,master=frm_auth)
+    ent_auth.pack()
+    frm_auth.place(relx=.5, rely=.5, anchor="c")
+    return ent_auth
 
 def add_attachment(name,frm_attachments):
     frm_elem=tk.Frame(master=frm_attachments)

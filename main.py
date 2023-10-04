@@ -7,16 +7,32 @@ import re
 from tkinter.messagebox import showinfo,askyesno
 import easygui
 from os.path import basename
+import base64
+from cryptography.fernet import Fernet
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.hkdf import HKDF
+import hashlib
 
 load_dotenv()
 
 # PUT YOUR EMAIL AND APP-PASSWORD HERE
 sender_email = os.getenv('MY_MAIL')
 password = os.getenv('APP_PASSWORD')
+hash_value = os.getenv('HASH')
+
+hkdf = HKDF(
+    algorithm=hashes.SHA256(), 
+    length=32,
+    salt=None,  
+    info=None,  
+    backend=default_backend()
+)
 
 display_window = tk.Tk()
 interactable_elements = {}
 attachments = {}
+login_ent = None
 
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
  
@@ -139,10 +155,45 @@ def add_bindings():
     interactable_elements["Cc_btn"].bind("<Button-1>",load_csv_cc)
     interactable_elements["Bcc_btn"].bind("<Button-1>",load_csv_bcc)
 
+def on_login_enter(event):
+    global login_ent
+    global hash_value
+    inserted_pw = login_ent.get()
+    hasher = hashlib.sha256()
+    hasher.update(inserted_pw.encode())
+    pw_hash = str(hasher.hexdigest())
+    if pw_hash != hash_value:
+        # incorrect password
+        return
+    global hkdf
+    global password
+    fernet_secret_string = inserted_pw + inserted_pw
+    fernet_key = base64.urlsafe_b64encode(hkdf.derive(fernet_secret_string.encode()))
+    fernet = Fernet(fernet_key)
+    password = fernet.decrypt(password.encode()).decode()
+    clear_window()
+    login_ent = None
+    setup_main_app()
+
+def clear_window():
+    global display_window
+    for child in display_window.winfo_children():
+        child.destroy()
+    
+def setup_main_app():
+    global interactable_elements
+    interactable_elements = window.display_editor_window(display_window)
+    add_bindings()
+
+def setup_login():
+    global login_ent
+    login_ent = window.display_authentication_window(display_window)
+    login_ent.bind('<Return>', on_login_enter)
+
 if __name__ == "__main__":
     if not os.path.exists(".env"):
         print("No environment file found. Remember to run the setup before starting the client for the first time.")
         quit(0)
-    interactable_elements = window.display_editor_window(display_window)
-    add_bindings()
+    window.initialize_window(display_window)
+    setup_login()
     display_window.mainloop()

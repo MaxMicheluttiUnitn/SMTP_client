@@ -140,6 +140,9 @@ def add_bindings():
     interactable_elements["Bcc_btn"].bind("<Button-1>",load_csv_bcc)
 
 if __name__ == "__main__":
+    if not os.path.exists(".env"):
+        print("No environment file found. Remember to run the setup before starting the client for the first time.")
+        quit(0)
     interactable_elements = window.display_editor_window(display_window)
     add_bindings()
     display_window.mainloop()

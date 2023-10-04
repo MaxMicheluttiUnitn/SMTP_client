@@ -38,7 +38,7 @@ def read_csv(recipients):
             if line_count > 0:
                 recipients.append(row[0])
             line_count += 1
-        print(f'Processed {line_count - 1} lines.')
+        #print(f'Processed {line_count - 1} lines.')
     return True
 
 def send_email(subject, body, sender, receiver, cc_recipients, bcc_recipients, password, attachments):

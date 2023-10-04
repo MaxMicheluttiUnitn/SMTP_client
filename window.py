@@ -66,10 +66,14 @@ def display_attachments_layer():
     frm_attach = tk.Frame(pady=3, height=15)
     lbl_attach=tk.Label(text="No attachments", anchor=tk.W, master=frm_attach)
     lbl_attach.pack(side=tk.LEFT,fill=tk.Y)
+    frm_attachments=tk.Frame(master=frm_attach)
+    frm_attachments.pack(side=tk.LEFT,fill=tk.Y)
     frm_attach.pack(fill=tk.X)
-    return lbl_attach
+    return frm_attachments, lbl_attach
 
 def display_editor_window(window):
+    img = PhotoImage(file='logo.png')
+    window.iconphoto(False, img)
     window.title("SMTP client")
     display_email_elem("From:",sender_email)
     ent_to,btn_to = display_top_entry_elem("To:",default_entry=sender_email)
@@ -77,7 +81,7 @@ def display_editor_window(window):
     ent_bcc,btn_bcc = display_top_entry_elem("BCC:", True, "From CSV")
     ent_subject,btn_subject = display_top_entry_elem("Subject:")
     txt_editor = display_text_editor()
-    lbl_attach = display_attachments_layer()
+    frm_attachments,lbl_attach = display_attachments_layer()
     btn_send,btn_cancel,btn_attach = display_bottom_menu()
     return {
         "To" : ent_to,
@@ -90,8 +94,22 @@ def display_editor_window(window):
         "Send_btn": btn_send,
         "Cancel_btn": btn_cancel,
         "Attach_btn": btn_attach,
-        "Attach_lbl": lbl_attach
+        "Attach_lbl": lbl_attach,
+        "Attachments_frm": frm_attachments
     }
+
+def add_attachment(name,frm_attachments):
+    frm_elem=tk.Frame(master=frm_attachments)
+    lbl_attachment=tk.Label(text=name,anchor=tk.W,master=frm_elem)
+    lbl_attachment.pack(side=tk.LEFT)
+    btn_attachment=tk.Button(
+        text="X",
+        relief=tk.RAISED,
+        master=frm_elem
+    )
+    btn_attachment.pack(side=tk.LEFT)
+    frm_elem.pack(side=tk.LEFT)
+    return frm_elem, btn_attachment
 
 if __name__ == "__main__":
     window = tk.Tk(baseName="app")

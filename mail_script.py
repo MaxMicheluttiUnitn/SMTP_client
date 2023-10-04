@@ -20,13 +20,17 @@ body = "Defaault content"
 
 def read_mail():
     subject = input("What is the subject of the mail? ")
-    content_file = easygui.fileopenbox("Select the content of the message")
+    content_file = None
+    while content_file is None:
+        content_file = easygui.fileopenbox("Select the content of the message")
     f = open(content_file, "r")
     body = f.read() 
     return subject,body
 
 def read_csv(recipients):
     csv_file = easygui.fileopenbox("Select the csv file")
+    if csv_file is None:
+        return False
     with open('mails.csv') as csv_file:
         csv_reader = csv.reader(csv_file)
         line_count = 0
@@ -35,6 +39,7 @@ def read_csv(recipients):
                 recipients.append(row[0])
             line_count += 1
         print(f'Processed {line_count - 1} lines.')
+    return True
 
 def send_email(subject, body, sender, receiver, cc_recipients, bcc_recipients, password, attachments):
     # msg = MIMEText(body)
@@ -77,6 +82,8 @@ Subject:{subject}
         wants_to_attach = input("Would you like to add some attachments? [y/n]: ")
         while(wants_to_attach == 'y' or wants_to_attach == 'Y'):
             new_attachment = easygui.fileopenbox("Select the file to attach")
+            if(new_attachment is None):
+                print("You did not select any file")
             if(new_attachment in attachments):
                 print("You alreasy attached this file.")
             else:

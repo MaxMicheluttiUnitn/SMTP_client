@@ -34,8 +34,7 @@ Once everything is installed you can run the setup script:
  >> python3 setup.py 
  ```
 
-In alternative to create and fill the **.env** file as shown in **.env.example** with your email and password.  
-To send emails from Google GMail accounts use the **APP-PASSWORD** that you can generate from your GMail account.
+In alternative you can create and fill the **.env** file as shown in **.env.example** with your email and APP Password. To send emails from Gmail compatible accounts use the **APP-PASSWORD** that you can generate from your Google account.
 
 ## Use
 

@@ -227,7 +227,16 @@ def display_final_setup_window(window):
     frm_final=tk.Frame(master=window)
     lbl_final=tk.Label(text="You have completed the setup for the mail client. You can now close this window and start using the client.", anchor=tk.W, master=frm_final, wraplength=400)
     lbl_final.pack()
+    btn_final=tk.Button(
+        text="Close",
+        relief=tk.RAISED,
+        master=frm_final
+    )
+    btn_final.pack()
     frm_final.place(relx=.5, rely=.5, anchor="c")
+    return {
+        "Finished_setup_btn": btn_final
+    }
 
 if __name__ == "__main__":
     window = tk.Tk(baseName="app")

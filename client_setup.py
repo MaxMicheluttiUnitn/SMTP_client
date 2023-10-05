@@ -59,6 +59,10 @@ google_pw = None
 user_mail = None
 data_path = None
 
+def close_window(event):
+    global display_window
+    display_window.destroy()
+
 def on_client_pw_enter(event):
     global interactable_elements
     global display_window
@@ -87,7 +91,8 @@ HASH = \"{hashed_value}\""""
             f = open(os.path.join(BASEDIR, '.env'), "x") 
             f.write(content)
             window.clean_window(display_window)
-            window.display_final_setup_window(display_window)
+            interactable_elements = window.display_final_setup_window(display_window)
+            interactable_elements["Finished_setup_btn"].bind("<Button-1>",close_window)
         except:
             print("An error occured when trying to write the .env file")
 
@@ -114,6 +119,7 @@ def on_google_pw_enter(event):
         interactable_elements["Client_pw_btn"].bind("<Button-1>",on_client_pw_enter)
         interactable_elements["Client_pw_ent"].bind("<Return>",focus_second_client_pw)
         interactable_elements["Client_pw_repeat_ent"].bind("<Return>",on_client_pw_enter)
+        interactable_elements["Client_pw_ent"].focus_set()
 
 def focus_second_google_pw(event):
     interactable_elements["Google_pw_repeat_ent"].focus_set()
@@ -130,6 +136,7 @@ def on_mail_return(event):
         interactable_elements["Google_pw_btn"].bind("<Button-1>",on_google_pw_enter)
         interactable_elements["Google_pw_ent"].bind("<Return>",focus_second_google_pw)
         interactable_elements["Google_pw_repeat_ent"].bind("<Return>",on_google_pw_enter)
+        interactable_elements["Google_pw_ent"].focus_set()
     else:
         interactable_elements["Mail_ent"].delete(0,tk.END)
         interactable_elements["Mail_error_lbl"].config(text="Please insert a valid email")
@@ -142,6 +149,7 @@ def gui_setup(gui_window, path):
     display_window = gui_window
     interactable_elements = window.display_ask_email_window(display_window)
     interactable_elements["Mail_ent"].bind("<Return>",on_mail_return)
+    interactable_elements["Mail_ent"].focus_set()
     display_window.mainloop()
 
 if __name__ == "__main__":

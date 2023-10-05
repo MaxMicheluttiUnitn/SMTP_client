@@ -8,7 +8,6 @@ import regex_checks
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
 
 def terminal_setup():
-    global hkdf
     try:
         f = open(os.path.join(BASEDIR, '.env'), "x") 
     except:

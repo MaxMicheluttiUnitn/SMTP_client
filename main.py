@@ -21,7 +21,7 @@ display_window = tk.Tk()
 interactable_elements = {}
 attachments = {}
 
-regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,9}\b'
  
 def check(email):
     global regex
@@ -154,7 +154,6 @@ def on_login_enter(event):
         return
     global google_password
     google_password = security.get_google_app_pw(inserted_pw)
-    print(google_password)
     window.clean_window(display_window)
     setup_main_app()
     

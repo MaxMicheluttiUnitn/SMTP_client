@@ -2,7 +2,7 @@ import tkinter as tk
 from dotenv import load_dotenv
 import os
 import window
-import setup
+import client_setup
 import mail_script
 import re
 from tkinter.messagebox import showinfo,askyesno
@@ -168,10 +168,14 @@ def setup_login():
     interactable_elements = window.display_authentication_window(display_window)
     interactable_elements["Auth_ent"].bind('<Return>', on_login_enter)
 
-if __name__ == "__main__":
+def main():
+    global display_window
     if not os.path.exists(".env"):
-        setup.gui_setup(display_window)
+        client_setup.gui_setup(display_window)
     else:
         window.initialize_window(display_window)
         setup_login()
         display_window.mainloop()
+
+if __name__ == "__main__":
+    main()

@@ -68,7 +68,13 @@ def send_email(subject, body, sender, receiver, cc_recipients, bcc_recipients, p
        smtp_server.send_message(msg,sender_email)
     print("Message sent!")
 
-if __name__ == "__main__":
+
+def main():
+    global subject
+    global body
+    global sender_email
+    global hashed_password
+    global google_password
     if not os.path.exists(".env"):
         print("No \".env\" file found. Please set up your \".env\" file by running the \"setup.py\" file or by starting the main app if you prefer to use the gui.")
     inserted_pw = input("Insert your password to log into the client: ")
@@ -113,3 +119,6 @@ Subject:{subject}
             print("Operation cancelled...")
     else:
         print("Operation cancelled...")
+
+if __name__ == "__main__":
+    main()

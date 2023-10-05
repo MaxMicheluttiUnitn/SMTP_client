@@ -55,7 +55,7 @@ def terminal_setup():
     f.write(content)
     print("\n\nSetup completed, you can now use the mail client")
 
-if __name__ == "__main__":
+def main():
     terminal_setup()
 
 interactable_elements={}
@@ -135,3 +135,6 @@ def gui_setup(gui_window):
     interactable_elements = window.display_ask_email_window(display_window)
     interactable_elements["Mail_ent"].bind("<Return>",on_mail_return)
     display_window.mainloop()
+
+if __name__ == "__main__":
+    main()

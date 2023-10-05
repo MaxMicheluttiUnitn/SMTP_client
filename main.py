@@ -8,27 +8,13 @@ import re
 from tkinter.messagebox import showinfo,askyesno
 import easygui
 from os.path import basename
-import base64
-from cryptography.fernet import Fernet
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.kdf.hkdf import HKDF
-import hashlib
 
 load_dotenv()
 
 # PUT YOUR EMAIL AND APP-PASSWORD HERE
 sender_email = os.getenv('MY_MAIL')
-password = os.getenv('APP_PASSWORD')
+google_password = os.getenv('APP_PASSWORD')
 hash_value = os.getenv('HASH')
-
-hkdf = HKDF(
-    algorithm=hashes.SHA256(), 
-    length=32,
-    salt=None,  
-    info=None,  
-    backend=default_backend()
-)
 
 display_window = tk.Tk()
 interactable_elements = {}
@@ -50,7 +36,7 @@ def confirm_popup(subject,text,receiver,cc_receivers,bcc_receivers):
     answer = askyesno(title='Confirm',
                     message='Are you sure that you want to send the email?')
     if answer:
-        mail_script.send_email(subject,text,sender_email,receiver,cc_receivers,bcc_receivers,password,attachments.keys())
+        mail_script.send_email(subject,text,sender_email,receiver,cc_receivers,bcc_receivers,google_password,attachments.keys())
         reset(None)
 
 def attach(event):
@@ -159,21 +145,14 @@ def on_login_enter(event):
     global interactable_elements
     global hash_value
     inserted_pw = interactable_elements["Auth_ent"].get()
-    hasher = hashlib.sha256()
-    hasher.update(inserted_pw.encode())
-    pw_hash = str(hasher.hexdigest())
-    if pw_hash != hash_value:
+    if not mail_script.check_password(inserted_pw):
         # incorrect password
         interactable_elements["Auth_ent"].delete(0,tk.END)
         if len(interactable_elements["Auth_frm"].winfo_children()) == 2:
             window.add_wrong_password_label(interactable_elements["Auth_frm"])
         return
-    global hkdf
-    global password
-    fernet_secret_string = inserted_pw + inserted_pw
-    fernet_key = base64.urlsafe_b64encode(hkdf.derive(fernet_secret_string.encode()))
-    fernet = Fernet(fernet_key)
-    password = fernet.decrypt(password.encode()).decode()
+    global google_password
+    google_password = mail_script.get_google_app_pw(inserted_pw)
     window.clean_window(display_window)
     setup_main_app()
     

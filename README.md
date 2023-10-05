@@ -31,6 +31,12 @@ For **LINUX** users, install TKinter to load the GUI:
 Once everything is installed you can run the setup script:
 
 ```
+ >> python3 main.py 
+ ```
+
+Alternatively you can run the terminal only version by typing:
+
+```
  >> python3 setup.py 
  ```
 
@@ -40,13 +46,13 @@ The setup procedure will require you to choose a password for the client that yo
 
 ## Use
 
-To use the full GUI type in your terminal
+To use the full GUI type in your terminal:
 
 ```
  >> python3 main.py
  ```
 
-To use the terminal version type
+To use the terminal version type:
 
 ```
  >> python3 mail_script.py
@@ -56,7 +62,13 @@ The CSV file loaded by the application must be in the following format: receiver
 
 ## Forgot your Password?
 
-Simply delete the **.env** file and run the setup again. Everything will be exactly like your first time setting up the mail client.
+Simply delete the **.env** file and run the setup again. Everything will be exactly like your first time setting up the mail client. To run the setup again just type:
+
+```
+ >> python3 main.py 
+ ```
+
+If you want you can use the terminal version by typing:
 
 ```
  >> python3 setup.py 

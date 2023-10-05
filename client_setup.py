@@ -1,18 +1,11 @@
 from getpass import getpass
-import re
 import security
 import tkinter as tk
 import window
 import os
+import regex_checks
 
 BASEDIR = os.path.abspath(os.path.dirname(__file__))
-regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,9}\b'
- 
-def check(email):
-    global regex
-    if(re.fullmatch(regex, email)):
-        return True
-    return False
 
 def terminal_setup():
     global hkdf
@@ -22,13 +15,13 @@ def terminal_setup():
         print(".env file already generated. Delete old file to restart the setup.")
         return
     mail="no"
-    while not check(mail):
+    while not regex_checks.check_mail(mail):
         mail = input("Please insert the Gmail compatible e-mail that you want to use: ")
     password = "yes"
     password_repeat = "no"
     already_once = False
     print("\n\nTo use this application you need an APP PASSWORD for Gmail.\nIf you do not have one, you can generate it from your GOOGLE ACCOUNT.\nYour password will be encrypted and saved on this device and will only be used to send emails through this client.")
-    while password != password_repeat or password == "":
+    while password != password_repeat or not regex_checks.check_password_regex(password):
         if not already_once:
             already_once = True
         else:
@@ -39,7 +32,7 @@ def terminal_setup():
     application_password_copy = "no"
     already_once = False
     print("\n\nSelect a password for the mail client, the password must be at least 5 character long.\nIt will be used to encode and ecrypt your app password, as well as giving you access to the client.")
-    while application_password != application_password_copy or application_password=="" or len(application_password)<5:
+    while application_password != application_password_copy or not regex_checks.check_password_regex(application_password):
         if not already_once:
             already_once = True
         else:
@@ -130,7 +123,7 @@ def on_mail_return(event):
     global display_window
     global user_mail
     mail_text = interactable_elements["Mail_ent"].get()
-    if check(mail_text):
+    if regex_checks.check_mail(mail_text):
         user_mail = mail_text
         window.clean_window(display_window)
         interactable_elements = window.display_ask_google_password_window(display_window)

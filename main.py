@@ -4,7 +4,7 @@ import os
 import window
 import client_setup
 import mail_script
-import re
+import regex_checks
 from tkinter.messagebox import showinfo,askyesno
 import easygui
 from os.path import basename
@@ -20,14 +20,6 @@ hash_value = os.getenv('HASH')
 display_window = tk.Tk()
 interactable_elements = {}
 attachments = {}
-
-regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,9}\b'
- 
-def check(email):
-    global regex
-    if(re.fullmatch(regex, email)):
-        return True
-    return False
 
 def error_pop_up(error_string):
     showinfo("Error!",error_string)
@@ -99,13 +91,13 @@ def send(event):
     if len(receiver) < 2:
         error_pop_up("Remember to add a receiver!")
         return
-    if not check(receiver):
+    if not regex_checks.check_mail(receiver):
         error_pop_up("The receiver is invalid, check the adress!")
         return
     cc_receivers = get_cc_receivers()
-    cc_receivers = list(filter(check,cc_receivers))
+    cc_receivers = list(filter(regex_checks.check_mail,cc_receivers))
     bcc_receivers = get_bcc_receivers()
-    bcc_receivers = list(filter(check,bcc_receivers))
+    bcc_receivers = list(filter(regex_checks.check_mail,bcc_receivers))
     confirm_popup(subject,text,receiver,cc_receivers,bcc_receivers)
 
 def get_cc_receivers():

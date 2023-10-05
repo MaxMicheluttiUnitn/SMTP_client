@@ -1,9 +1,9 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+BASEDIR = os.path.abspath(os.path.dirname(__file__))
+load_dotenv(dotenv_path=os.path.join(BASEDIR, '.env'))
 
-# PUT YOUR EMAIL AND APP-PASSWORD HERE
 sender_email = os.getenv('MY_MAIL')
 hashed_password = os.getenv('HASH')
 google_password = os.getenv('APP_PASSWORD')

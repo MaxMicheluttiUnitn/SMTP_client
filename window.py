@@ -1,17 +1,18 @@
 import tkinter as tk
 from tkinter import PhotoImage
-from dotenv import load_dotenv
 import os
 
-load_dotenv()
-
 # PUT YOUR EMAIL AND APP-PASSWORD HERE
-sender_email = os.getenv('MY_MAIL')
 #password = os.getenv('APP_PASSWORD')
+data_path=None
 
 def clean_window(window):
     for child in window.winfo_children():
         child.destroy()
+
+def set_path(path):
+    global data_path
+    data_path = path
 
 def display_top_entry_elem(name, has_button=False, btn_text="Press here", default_entry=None):
     frm_elem = tk.Frame(pady=3, height=15)
@@ -76,7 +77,8 @@ def display_attachments_layer():
     return frm_attachments, lbl_attach
 
 def initialize_window(window):
-    img = PhotoImage(file='logo.png')
+    global data_path
+    img = PhotoImage(file=os.path.join(data_path, 'logo.png'))
     window.iconphoto(False, img)
     window.title("SMTP client")
 
@@ -93,8 +95,7 @@ def add_attachment(name,frm_attachments):
     frm_elem.pack(side=tk.LEFT)
     return frm_elem, btn_attachment    
 
-def display_editor_window(window):
-    global sender_email
+def display_editor_window(window,sender_email):
     window.minsize(500,638)
     display_email_elem("From:",sender_email)
     ent_to,btn_to = display_top_entry_elem("To:",default_entry=sender_email)
@@ -224,7 +225,7 @@ def display_ask_client_password_window(window):
 
 def display_final_setup_window(window):
     frm_final=tk.Frame(master=window)
-    lbl_final=tk.Label(text="You have completed the setup for the mail clinet. You can now close this window and start using the client.", anchor=tk.W, master=frm_final, wraplength=400)
+    lbl_final=tk.Label(text="You have completed the setup for the mail client. You can now close this window and start using the client.", anchor=tk.W, master=frm_final, wraplength=400)
     lbl_final.pack()
     frm_final.place(relx=.5, rely=.5, anchor="c")
 

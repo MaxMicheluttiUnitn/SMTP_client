@@ -3,7 +3,9 @@ import re
 import security
 import tkinter as tk
 import window
+import os
 
+BASEDIR = os.path.abspath(os.path.dirname(__file__))
 regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,9}\b'
  
 def check(email):
@@ -15,7 +17,7 @@ def check(email):
 def terminal_setup():
     global hkdf
     try:
-        f = open(".env", "x") 
+        f = open(os.path.join(BASEDIR, '.env'), "x") 
     except:
         print(".env file already generated. Delete old file to restart the setup.")
         return
@@ -50,8 +52,8 @@ def terminal_setup():
     encripted_password=security.encrypt_pw(password,application_password)
     hashed_value= security.digestion(application_password)
     content = f"""MY_MAIL = \"{mail}\"
-    APP_PASSWORD = \"{encripted_password.decode()}\"
-    HASH = \"{hashed_value}\""""
+APP_PASSWORD = \"{encripted_password.decode()}\"
+HASH = \"{hashed_value}\""""
     f.write(content)
     print("\n\nSetup completed, you can now use the mail client")
 
@@ -62,6 +64,7 @@ interactable_elements={}
 display_window = None
 google_pw = None
 user_mail = None
+data_path = None
 
 def on_client_pw_enter(event):
     global interactable_elements
@@ -88,7 +91,7 @@ def on_client_pw_enter(event):
 APP_PASSWORD = \"{encripted_password.decode()}\"
 HASH = \"{hashed_value}\""""
         try:
-            f = open(".env", "x") 
+            f = open(os.path.join(BASEDIR, '.env'), "x") 
             f.write(content)
             window.clean_window(display_window)
             window.display_final_setup_window(display_window)
@@ -128,9 +131,11 @@ def on_mail_return(event):
         interactable_elements["Mail_ent"].delete(0,tk.END)
         interactable_elements["Mail_error_lbl"].config(text="Please insert a valid email")
 
-def gui_setup(gui_window):
+def gui_setup(gui_window, path):
     global interactable_elements
     global display_window
+    global data_path
+    data_path = path
     display_window = gui_window
     interactable_elements = window.display_ask_email_window(display_window)
     interactable_elements["Mail_ent"].bind("<Return>",on_mail_return)

@@ -3,7 +3,8 @@ import csv
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+BASEDIR = os.path.abspath(os.path.dirname(__file__))
+load_dotenv(dotenv_path=os.path.join(BASEDIR, '.env'))
 
 # PUT YOUR EMAIL AND APP-PASSWORD HERE
 sender_email = os.getenv('MY_MAIL')
@@ -75,8 +76,8 @@ def main():
     global sender_email
     global hashed_password
     global google_password
-    if not os.path.exists(".env"):
-        print("No \".env\" file found. Please set up your \".env\" file by running the \"setup.py\" file or by starting the main app if you prefer to use the gui.")
+    if not os.path.exists(os.path.join(BASEDIR, '.env')):
+        print("No \".env\" file found. Please set up your \".env\" file by running the \"client_setup.py\" file or by starting the main app if you prefer to use the gui.")
     inserted_pw = input("Insert your password to log into the client: ")
     if not security.check_password(inserted_pw):
         print("Incorrect password")

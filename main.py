@@ -10,9 +10,9 @@ import easygui
 from os.path import basename
 import security
 
-load_dotenv()
+BASEDIR = os.path.abspath(os.path.dirname(__file__))
+load_dotenv(dotenv_path=os.path.join(BASEDIR, '.env'))
 
-# PUT YOUR EMAIL AND APP-PASSWORD HERE
 sender_email = os.getenv('MY_MAIL')
 google_password = os.getenv('APP_PASSWORD')
 hash_value = os.getenv('HASH')
@@ -159,7 +159,7 @@ def on_login_enter(event):
     
 def setup_main_app():
     global interactable_elements
-    interactable_elements = window.display_editor_window(display_window)
+    interactable_elements = window.display_editor_window(display_window,sender_email)
     add_bindings()
 
 def setup_login():
@@ -169,9 +169,10 @@ def setup_login():
 
 def main():
     global display_window
-    if not os.path.exists(".env"):
-        client_setup.gui_setup(display_window)
+    if not os.path.exists(os.path.join(BASEDIR, '.env')):
+        client_setup.gui_setup(display_window, BASEDIR)
     else:
+        window.set_path(BASEDIR)
         window.initialize_window(display_window)
         setup_login()
         display_window.mainloop()

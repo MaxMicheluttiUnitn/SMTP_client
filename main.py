@@ -8,6 +8,7 @@ import re
 from tkinter.messagebox import showinfo,askyesno
 import easygui
 from os.path import basename
+import security
 
 load_dotenv()
 
@@ -145,14 +146,15 @@ def on_login_enter(event):
     global interactable_elements
     global hash_value
     inserted_pw = interactable_elements["Auth_ent"].get()
-    if not mail_script.check_password(inserted_pw):
+    if not security.check_password(inserted_pw):
         # incorrect password
         interactable_elements["Auth_ent"].delete(0,tk.END)
         if len(interactable_elements["Auth_frm"].winfo_children()) == 2:
             window.add_wrong_password_label(interactable_elements["Auth_frm"])
         return
     global google_password
-    google_password = mail_script.get_google_app_pw(inserted_pw)
+    google_password = security.get_google_app_pw(inserted_pw)
+    print(google_password)
     window.clean_window(display_window)
     setup_main_app()
     

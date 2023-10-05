@@ -1,11 +1,6 @@
 from getpass import getpass
 import re
-import base64
-from cryptography.fernet import Fernet
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.kdf.hkdf import HKDF
-import hashlib
+import security
 import tkinter as tk
 import window
 
@@ -16,14 +11,6 @@ def check(email):
     if(re.fullmatch(regex, email)):
         return True
     return False
-
-hkdf = HKDF(
-    algorithm=hashes.SHA256(), 
-    length=32,
-    salt=None,  
-    info=None,  
-    backend=default_backend()
-)
 
 def terminal_setup():
     global hkdf
@@ -60,13 +47,8 @@ def terminal_setup():
                 print("Client passwords did not match.")
         application_password = getpass(prompt="Insert client password: ")
         application_password_copy = getpass(prompt="Repeat client password: ")
-    fernet_secret_string = application_password + application_password_copy
-    fernet_key = base64.urlsafe_b64encode(hkdf.derive(fernet_secret_string.encode()))
-    fernet = Fernet(fernet_key)
-    encripted_password = fernet.encrypt(password.encode())
-    hasher = hashlib.sha256()
-    hasher.update(application_password.encode())
-    hashed_value = hasher.hexdigest()
+    encripted_password=security.encrypt_pw(password,application_password)
+    hashed_value= security.digestion(application_password)
     content = f"""MY_MAIL = \"{mail}\"
     APP_PASSWORD = \"{encripted_password.decode()}\"
     HASH = \"{hashed_value}\""""
@@ -100,13 +82,8 @@ def on_client_pw_enter(event):
         interactable_elements["Client_pw_ent"].delete(0,tk.END)
         interactable_elements["Client_pw_repeat_ent"].delete(0,tk.END)
     else:
-        fernet_secret_string = inserted_client_pw + inserted_client_pw
-        fernet_key = base64.urlsafe_b64encode(hkdf.derive(fernet_secret_string.encode()))
-        fernet = Fernet(fernet_key)
-        encripted_password = fernet.encrypt(google_pw.encode())
-        hasher = hashlib.sha256()
-        hasher.update(inserted_client_pw.encode())
-        hashed_value = hasher.hexdigest()
+        encripted_password = security.encrypt_pw(google_pw,inserted_client_pw)
+        hashed_value = security.digestion(inserted_client_pw)
         content = f"""MY_MAIL = \"{user_mail}\"
 APP_PASSWORD = \"{encripted_password.decode()}\"
 HASH = \"{hashed_value}\""""

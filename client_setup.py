@@ -98,6 +98,9 @@ HASH = \"{hashed_value}\""""
         except:
             print("An error occured when trying to write the .env file")
 
+def focus_second_client_pw(event):
+    interactable_elements["Client_pw_repeat_ent"].focus_set()
+
 def on_google_pw_enter(event):
     global interactable_elements
     global display_window
@@ -116,6 +119,11 @@ def on_google_pw_enter(event):
         window.clean_window(display_window)
         interactable_elements = window.display_ask_client_password_window(display_window)
         interactable_elements["Client_pw_btn"].bind("<Button-1>",on_client_pw_enter)
+        interactable_elements["Client_pw_ent"].bind("<Return>",focus_second_client_pw)
+        interactable_elements["Client_pw_repeat_ent"].bind("<Return>",on_client_pw_enter)
+
+def focus_second_google_pw(event):
+    interactable_elements["Google_pw_repeat_ent"].focus_set()
 
 def on_mail_return(event):
     global interactable_elements
@@ -127,6 +135,8 @@ def on_mail_return(event):
         window.clean_window(display_window)
         interactable_elements = window.display_ask_google_password_window(display_window)
         interactable_elements["Google_pw_btn"].bind("<Button-1>",on_google_pw_enter)
+        interactable_elements["Google_pw_ent"].bind("<Return>",focus_second_google_pw)
+        interactable_elements["Google_pw_repeat_ent"].bind("<Return>",on_google_pw_enter)
     else:
         interactable_elements["Mail_ent"].delete(0,tk.END)
         interactable_elements["Mail_error_lbl"].config(text="Please insert a valid email")
